@@ -3,42 +3,13 @@ function Get-PSTenablePlugin {
     #Requires -Modules PSFramework
     [CmdletBinding()]
     param (
-        [parameter(Position = 0)]
-        [PSCredential]
-        $Credential = (Get-PSFConfigValue -FullName 'PSTenable.Credential'),
-
-        [parameter(Position = 1, mandatory = $true)]
+        [parameter(Position = 0, mandatory = $true)]
         [string]
         $ID
     )
 
     begin {
 
-        # Credentials
-        $APICredential = @{
-            username       = $Credential.UserName
-            password       = $Credential.GetNetworkCredential().Password
-            releaseSession = "FALSE"
-        }
-
-        $SessionSplat = @{
-            URI             = "$(Get-PSFConfigValue -FullName 'PSTenable.Server')/token"
-            SessionVariable = "SCSession"
-            Method          = "Post"
-            ContentType     = "application/json"
-            Body            = (ConvertTo-Json $APICredential)
-        }
-
-        try {
-            $Session = Invoke-RestMethod @SessionSplat
-        }
-        catch {
-            Stop-PSFFunction -Message "Username or Password is incorect." -ErrorRecord $_
-            return
-        }
-
-        ## Token
-        $token = $Session.response.token
     }
 
     process {
@@ -76,17 +47,13 @@ function Get-PSTenablePlugin {
             }
         }
 
-        $body = ConvertTo-Json ($query) -depth 5
-
-        $splat = @{
-            URI        = "$(Get-PSFConfigValue -FullName 'PSTenable.Server')/analysis"
-            Method     = "POST"
-            Headers    = @{"X-SecurityCenter" = "$Token"}
-            WebSession = $SCSession
-            Body       = $body
+        $Splat = @{
+            Method = "Post"
+            Body = $(ConvertTo-Json $query -depth 5)
+            URI = "$(Get-PSFConfigValue -FullName 'PSTenable.Server')/analysis"
         }
 
-        $Output = Invoke-RestMethod @splat
+        $output = Invoke-PSTenableRest @Splat
 
     }
 
