@@ -11,7 +11,7 @@ A PowerShell wrapper around Tenable Security Center API
 ```
 ## Cache credentials and cache the tenable server
 $Credential = Get-Credential
-Connect-PSTenable -Credential $Credential -TenableServer "server.domain.com/rest"
+Connect-PSTenable -Credential $Credential -TenableServer "server.domain.com/rest" -Register
 ```
 
 ```
