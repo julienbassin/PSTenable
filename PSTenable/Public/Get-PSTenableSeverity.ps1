@@ -1,5 +1,5 @@
 #Requires -Modules PSFramework
-function Get-TenableSeverity {
+function Get-PSTenableSeverity {
     [CmdletBinding()]
     param (
         [Parameter(Position = 0, Mandatory = $true)]

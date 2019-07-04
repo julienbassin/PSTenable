@@ -1,5 +1,5 @@
 #Requires -Modules PSFramework
-function Get-TenablePluginFamilyWindows {
+function Get-PSTenablePluginFamilyWindows {
     [CmdletBinding()]
     param (
         [parameter(Position = 0)]

@@ -1,5 +1,5 @@
 #Requires -Modules PSFramework
-function Get-TenablePlugin {
+function Get-PSTenableCVE {
     #Requires -Modules PSFramework
     [CmdletBinding()]
     param (
@@ -9,7 +9,7 @@ function Get-TenablePlugin {
 
         [parameter(Position = 1, mandatory = $true)]
         [string]
-        $ID
+        $CVE
     )
 
     begin {
@@ -44,35 +44,29 @@ function Get-TenablePlugin {
     process {
 
         $query = @{
-            "tool"       = "vulnipdetail"
-            "sortField"  = "cveID"
-            "sortDir"    = "ASC"
-            "type"       = "vuln"
-            "sourceType" = "cumulative"
+            "tool"       = "vulnipdetail";
+            "sortField"  = "cveID";
+            "sortDir"    = "ASC";
+            "type"       = "vuln";
+            "sourceType" = "cumulative";
             "query"      = @{
-                "name"         = ""
-                "description"  = ""
-                "context"      = ""
-                "status"       = "-1"
-                "createdTime"  = 0
-                "modifiedtime" = 0
-                "sourceType"   = "cumulative"
-                "sortDir"      = "desc"
-                "tool"         = "listvuln"
-                "groups"       = "[]"
-                "type"         = "vuln"
-                "startOffset"  = 0
-                "endOffset"    = 5000
+                "createdTime"  = 0;
+                "sourceType"   = "cumulative";
+                "sortDir"      = "desc";
+                "tool"         = "vulnipdetail";
+                "modifiedTime" = 0;
+                "name"         = "";
+                "type"         = "vuln";
                 "filters"      = [array]@{
-                    "id"           = "pluginID"
-                    "filterName"   = "pluginID"
-                    "operator"     = "="
-                    "type"         = "vuln"
-                    "ispredefined" = $true
-                    "value"        = "$ID"
-                }
-                "vulntool"     = "listvuln"
-                "sortField"    = "severity"
+                    "operator"   = "=";
+                    "value"      = $CVE;
+                    "filterName" = "cveID"
+                };
+                "description"  = "";
+                "sortField"    = "severity";
+                "startOffset"  = 0;
+                "context"      = "";
+                "endOffset"    = 5000
             }
         }
 
@@ -86,11 +80,16 @@ function Get-TenablePlugin {
             Body       = $body
         }
 
-        $Output = Invoke-RestMethod @splat
+        $results = Invoke-RestMethod @splat
+
+        ## Get the pluginID and then call Get-TenablePlugin, and then output those results
+        $output = Foreach ($Plugin in $results.response.results.pluginid) {
+            Get-PSTenablePlugin -Credential $Credential -ID $Plugin
+        }
 
     }
 
     end {
-        $output.response.results
+        $output
     }
 }

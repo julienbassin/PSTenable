@@ -1,5 +1,5 @@
 #Requires -Modules PSFramework
-function Connect-Tenable {
+function Connect-PSTenable {
     [CmdletBinding()]
     param (
         [Parameter(Position = 0, mandatory = $true)]

@@ -1,16 +1,15 @@
 #Requires -Modules PSFramework
-function Get-TenableAssetAnalysis {
+function Get-PSTenablePlugin {
+    #Requires -Modules PSFramework
     [CmdletBinding()]
     param (
-        [String]
-        [Parameter(Position = 0, Mandatory = $true)]
-        [string]
-        $ComputerName,
-
-
-        [parameter(Position = 1)]
+        [parameter(Position = 0)]
         [PSCredential]
-        $Credential = (Get-PSFConfigValue -FullName 'PSTenable.Credential')
+        $Credential = (Get-PSFConfigValue -FullName 'PSTenable.Credential'),
+
+        [parameter(Position = 1, mandatory = $true)]
+        [string]
+        $ID
     )
 
     begin {
@@ -32,7 +31,8 @@ function Get-TenableAssetAnalysis {
 
         try {
             $Session = Invoke-RestMethod @SessionSplat
-        } catch {
+        }
+        catch {
             Stop-PSFFunction -Message "Username or Password is incorect." -ErrorRecord $_
             return
         }
@@ -64,12 +64,12 @@ function Get-TenableAssetAnalysis {
                 "startOffset"  = 0
                 "endOffset"    = 5000
                 "filters"      = [array]@{
-                    "id"           = "dnsName"
-                    "filterName"   = "dnsName"
+                    "id"           = "pluginID"
+                    "filterName"   = "pluginID"
                     "operator"     = "="
                     "type"         = "vuln"
                     "ispredefined" = $true
-                    "value"        = "$ComputerName"
+                    "value"        = "$ID"
                 }
                 "vulntool"     = "listvuln"
                 "sortField"    = "severity"
@@ -81,8 +81,8 @@ function Get-TenableAssetAnalysis {
         $splat = @{
             URI        = "$(Get-PSFConfigValue -FullName 'PSTenable.Server')/analysis"
             Method     = "POST"
-            WebSession = $SCSession
             Headers    = @{"X-SecurityCenter" = "$Token"}
+            WebSession = $SCSession
             Body       = $body
         }
 
@@ -91,6 +91,6 @@ function Get-TenableAssetAnalysis {
     }
 
     end {
-        $Output.response.results
+        $output.response.results
     }
 }
