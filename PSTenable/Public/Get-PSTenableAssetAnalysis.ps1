@@ -1,44 +1,30 @@
 #Requires -Modules PSFramework
 function Get-PSTenableAssetAnalysis {
+        <#
+    .SYNOPSIS
+        Returns all vulnerablitiies that are associated with a device in Tenable.
+    .DESCRIPTION
+        This function provides a way to retreive all vulnerabilities associated with a scanned device in Tenable.
+    .EXAMPLE
+        PS C:\> Get-PSTenableAssetAnalysis -ComputerName "server.fqdn.com"
+        This retreives all vulnerabilities reported by Tenable from computername server.fqdn.com
+    .INPUTS
+        None
+    .OUTPUTS
+        None
+    .NOTES
+        Make sure the computername is spelled correctly, otherwise the request will fail.
+    #>
     [CmdletBinding()]
     param (
         [String]
         [Parameter(Position = 0, Mandatory = $true)]
         [string]
-        $ComputerName,
-
-
-        [parameter(Position = 1)]
-        [PSCredential]
-        $Credential = (Get-PSFConfigValue -FullName 'PSTenable.Credential')
+        $ComputerName
     )
 
     begin {
 
-        # Credentials
-        $APICredential = @{
-            username       = $Credential.UserName
-            password       = $Credential.GetNetworkCredential().Password
-            releaseSession = "FALSE"
-        }
-
-        $SessionSplat = @{
-            URI             = "$(Get-PSFConfigValue -FullName 'PSTenable.Server')/token"
-            SessionVariable = "SCSession"
-            Method          = "Post"
-            ContentType     = "application/json"
-            Body            = (ConvertTo-Json $APICredential)
-        }
-
-        try {
-            $Session = Invoke-RestMethod @SessionSplat
-        } catch {
-            Stop-PSFFunction -Message "Username or Password is incorect." -ErrorRecord $_
-            return
-        }
-
-        ## Token
-        $token = $Session.response.token
     }
 
     process {
@@ -76,17 +62,13 @@ function Get-PSTenableAssetAnalysis {
             }
         }
 
-        $body = ConvertTo-Json ($query) -depth 5
-
-        $splat = @{
-            URI        = "$(Get-PSFConfigValue -FullName 'PSTenable.Server')/analysis"
-            Method     = "POST"
-            WebSession = $SCSession
-            Headers    = @{"X-SecurityCenter" = "$Token"}
-            Body       = $body
+        $Splat = @{
+            Method = "Post"
+            Body = $(ConvertTo-Json $query -depth 5)
+            URI = "$(Get-PSFConfigValue -FullName 'PSTenable.Server')/analysis"
         }
 
-        $Output = Invoke-RestMethod @splat
+        $output = Invoke-PSTenableRest @Splat
 
     }
 
