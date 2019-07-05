@@ -1,4 +1,3 @@
-#Requires -Modules PSFramework
 function Get-PSTenableCVE {
     <#
     .SYNOPSIS
@@ -11,6 +10,8 @@ function Get-PSTenableCVE {
 
         PS C:\> Get-PSTenableCVE -CVE "CVE-2019-0708"
         This returns all devices affected by CVE-2019-0708
+    .PARAMETER CVE
+        CVE Number, such as CVE-2019-0708
     .INPUTS
         None
     .OUTPUTS
@@ -61,9 +62,9 @@ function Get-PSTenableCVE {
             }
 
             $Splat = @{
-                Method = "Post"
-                Body   = $(ConvertTo-Json $query -depth 5)
-                URI    = "$(Get-PSFConfigValue -FullName 'PSTenable.Server')/analysis"
+                Method   = "Post"
+                Body     = $(ConvertTo-Json $query -depth 5)
+                Endpoint = "/analysis"
             }
 
             Invoke-PSTenableRest @Splat

@@ -17,4 +17,10 @@
     'PowerShellBuild' = @{
         Version = '0.3.0'
     }
+    'PSFramework' = @{
+        Version = 'latest'
+    }
+    'PSScriptAnalyzer' = @{
+        Version = 'latest'
+    }
 }

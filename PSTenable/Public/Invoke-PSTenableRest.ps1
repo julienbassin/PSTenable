@@ -3,7 +3,7 @@ function Invoke-PSTenableRest {
     Param(
         [Parameter(Mandatory = $true)]
         [string]
-        $URI,
+        $Endpoint,
 
         [Parameter(Mandatory = $true)]
         [string]
@@ -14,7 +14,8 @@ function Invoke-PSTenableRest {
     )
 
     $RestMethod_Params = @{ }
-    $RestMethod_Params['Uri'] = $URI
+    $RestMethod_Params['Uri'] = $(Get-PSFConfigValue -FullName 'PSTenable.Server')
+    $RestMethod_Params['Endpoint'] = $Endpoint
     $RestMethod_Params['Method'] = $Method
     $RestMethod_Params['Headers'] = @{"X-SecurityCenter" = $(Get-PSFConfigValue -FullName 'PSTenable.Token') }
     $RestMethod_Params['ContentType'] = "application/json"

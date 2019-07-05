@@ -1,5 +1,22 @@
-#Requires -Modules PSFramework
 function Get-PSTenableSeverity {
+    <#
+    .SYNOPSIS
+        Retrieves all vulnerabilities that are Critical, High, Medium, or Low in Tenable.
+    .DESCRIPTION
+        This function provides a way to retrieve all vulnerabilities in Tenable that are Critical, High,
+        Meidum, or Low.
+    .EXAMPLE
+        PS C:\> Get-PSTenableSeverity -Severity "Critical"
+        Retrieves all criitcal vulnerabilities.
+    .INPUTS
+        None
+    .PARAMETER Severity
+        Option for Critical, High, Medium or Low.
+    .OUTPUTS
+        None
+    .NOTES
+        None
+    #>
     [CmdletBinding()]
     param (
         [Parameter(Position = 0, Mandatory = $true)]
@@ -10,55 +27,18 @@ function Get-PSTenableSeverity {
             'Low'
         )]
         [string]
-        $Severity,
-
-
-        [parameter(Position = 1)]
-        [PSCredential]
-        $Credential = (Get-PSFConfigValue -FullName 'PSTenable.Credential'),
-
-        [parameter(Position = 2)]
-        [switch]
-        $Export,
-
-        [parameter(Position = 3)]
-        [switch]
-        $RawData
+        $Severity
     )
 
     begin {
 
         switch ($Severity) {
-            "Critical" {$ID = "4"}
-            "High" {$ID = "3"}
-            "Medium" {$ID = "2"}
-            "Low" {$ID = "1"}
+            "Critical" { $ID = "4" }
+            "High" { $ID = "3" }
+            "Medium" { $ID = "2" }
+            "Low" { $ID = "1" }
         }
 
-        # Credentials
-        $APICredential = @{
-            username       = $Credential.UserName
-            password       = $Credential.GetNetworkCredential().Password
-            releaseSession = "FALSE"
-        }
-
-        $SessionSplat = @{
-            URI             = "$(Get-PSFConfigValue -FullName 'PSTenable.Server')/token"
-            SessionVariable = "SCSession"
-            Method          = "Post"
-            ContentType     = "application/json"
-            Body            = (ConvertTo-Json $APICredential)
-        }
-
-        try {
-            $Session = Invoke-RestMethod @SessionSplat
-        } catch {
-            Stop-PSFFunction -Message "Username or Password is incorect." -ErrorRecord $_
-            return
-        }
-
-        ## Token
-        $token = $Session.response.token
     }
 
     process {
@@ -96,17 +76,13 @@ function Get-PSTenableSeverity {
             }
         }
 
-        $body = ConvertTo-Json ($query) -depth 5
-
-        $splat = @{
-            URI        = "$(Get-PSFConfigValue -FullName 'PSTenable.Server')/analysis"
-            Method     = "POST"
-            WebSession = $SCSession
-            Headers    = @{"X-SecurityCenter" = "$Token"}
-            Body       = $body
+        $Splat = @{
+            Method   = "Post"
+            Body     = $(ConvertTo-Json $query -depth 5)
+            Endpoint = "/analysis"
         }
 
-        $Output = Invoke-RestMethod @splat
+        $output = Invoke-PSTenableRest @Splat
     }
 
     end {

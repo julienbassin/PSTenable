@@ -4,7 +4,7 @@ A PowerShell wrapper around Tenable Security Center API
 
 ## Overview
 
-This is a PowerShell Module that I developed that is an API wrapper around [Tenable Security Center's API](https://docs.tenable.com/sccv/api/index.html).
+This is a PowerShell Module that I developed that is an API wrapper around [Tenable Security Center's API](https://docs.tenable.com/sccv/api/index.html) version 5.10
 
 ## Installation
 

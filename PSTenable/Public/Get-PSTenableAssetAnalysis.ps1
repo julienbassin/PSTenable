@@ -1,6 +1,5 @@
-#Requires -Modules PSFramework
 function Get-PSTenableAssetAnalysis {
-        <#
+    <#
     .SYNOPSIS
         Returns all vulnerablitiies that are associated with a device in Tenable.
     .DESCRIPTION
@@ -8,6 +7,8 @@ function Get-PSTenableAssetAnalysis {
     .EXAMPLE
         PS C:\> Get-PSTenableAssetAnalysis -ComputerName "server.fqdn.com"
         This retreives all vulnerabilities reported by Tenable from computername server.fqdn.com
+    .PARAMETER ComputerName
+        Computername in Tenable that you're searching for
     .INPUTS
         None
     .OUTPUTS
@@ -63,9 +64,9 @@ function Get-PSTenableAssetAnalysis {
         }
 
         $Splat = @{
-            Method = "Post"
-            Body = $(ConvertTo-Json $query -depth 5)
-            URI = "$(Get-PSFConfigValue -FullName 'PSTenable.Server')/analysis"
+            Method   = "Post"
+            Body     = $(ConvertTo-Json $query -depth 5)
+            Endpoint = "/analysis"
         }
 
         $output = Invoke-PSTenableRest @Splat

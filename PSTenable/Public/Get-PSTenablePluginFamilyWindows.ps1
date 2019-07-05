@@ -1,5 +1,22 @@
-#Requires -Modules PSFramework
 function Get-PSTenablePluginFamilyWindows {
+    <#
+    .SYNOPSIS
+        Retrieves all vulnerabilities related to the "Windows" patch family.
+    .DESCRIPTION
+        This function provides a way to retrieve all devices affected by the following Patch Families:
+        1. Windows
+        2. Windows : Microsoft Bulletins
+        3. Windows : User management
+    .EXAMPLE
+        PS C:\> Get-PSTenablePluginFamilyWindows
+        Retrieves all vulnerabilities related to the windows patch families.
+    .INPUTS
+        None
+    .OUTPUTS
+        None
+    .NOTES
+        None
+    #>
     [CmdletBinding()]
     param (
     )
@@ -16,7 +33,7 @@ function Get-PSTenablePluginFamilyWindows {
             '29'
         )
 
-        $Output =  Foreach ($plugin in $WindowsPlugins) {
+        $Output = Foreach ($plugin in $WindowsPlugins) {
 
             $query = @{
                 "tool"       = "vulnipdetail"
@@ -53,9 +70,9 @@ function Get-PSTenablePluginFamilyWindows {
             }
 
             $Splat = @{
-                Method = "Post"
-                Body = $(ConvertTo-Json $query -depth 5)
-                URI = "$(Get-PSFConfigValue -FullName 'PSTenable.Server')/analysis"
+                Method   = "Post"
+                Body     = $(ConvertTo-Json $query -depth 5)
+                Endpoint = "/analysis"
             }
 
             Invoke-PSTenableRest @Splat

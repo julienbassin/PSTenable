@@ -1,4 +1,3 @@
-#Requires -Modules PSFramework
 function Connect-PSTenable {
     <#
     .SYNOPSIS
@@ -11,6 +10,12 @@ function Connect-PSTenable {
         PS C:\> Connect-PSTenable -Credential $Cred -TenableServer "tenable.domain.com/rest" -Register
         This prompts for user credentials, and then, using Connect-PSTenable, sets the credentials,
         token, web session, and the Tenable Server using PSFramework.
+    .PARAMETER Credential
+        PSCredential Object
+    .PARAMETER TenableServer
+        Tenable Server Name, tenable.domain.com/rest
+    .PARAMETER Register
+        If specified, this will cache the Credential, TenableServer, Token, and Web Session.
     .INPUTS
         None
     .OUTPUTS
@@ -40,9 +45,10 @@ function Connect-PSTenable {
 
     process {
 
+        Set-PSFConfig -FullName "PSTenable.Server" -Value $TenableServer
+        Set-PSFconfig -FullName "PSTenable.Credential" -Value $Credential
+
         if ($PSBoundParameters.ContainsKey('Register')) {
-            Set-PSFConfig -FullName "PSTenable.Server" -Value $TenableServer
-            Set-PSFconfig -FullName "PSTenable.Credential" -Value $Credential
             Register-PSFConfig -FullName "PSTenable.Server"
             Register-PSFConfig -FullName "PSTenable.Credential"
         }
