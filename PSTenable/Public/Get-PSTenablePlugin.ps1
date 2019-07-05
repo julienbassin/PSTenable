@@ -74,12 +74,28 @@ function Get-PSTenablePlugin {
                 Endpoint = "/analysis"
             }
 
-            Invoke-PSTenableRest @Splat
+            $results = Invoke-PSTenableRest @Splat
+
+            if ($output.response.releasesession -eq $true) {
+
+                Invoke-PSTenableTokenRenewal
+
+                $Splat = @{
+                    Method   = "Post"
+                    Body     = $(ConvertTo-Json $query -depth 5)
+                    Endpoint = "/analysis"
+                }
+
+                $results = Invoke-PSTenableRest @Splat
+            }
+            else {
+                $results = $Output.response.results
+            }
         }
 
     }
 
     end {
-        $output.response.results
+        $results
     }
 }

@@ -82,10 +82,26 @@ function Get-PSTenableSeverity {
             Endpoint = "/analysis"
         }
 
-        $output = Invoke-PSTenableRest @Splat
+        $a = Invoke-PSTenableRest @Splat
+
+        if ($a.response.releasesession -eq $true) {
+
+            Invoke-PSTenableTokenRenewal
+
+            $Splat = @{
+                Method   = "Post"
+                Body     = $(ConvertTo-Json $query -depth 5)
+                Endpoint = "/analysis"
+            }
+
+            Invoke-PSTenableRest @Splat
+        }
+        else {
+            $a
+        }
     }
 
     end {
-        $Output.response.results
+        $a.response.results
     }
 }

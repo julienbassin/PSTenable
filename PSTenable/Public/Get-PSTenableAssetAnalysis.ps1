@@ -71,9 +71,25 @@ function Get-PSTenableAssetAnalysis {
 
         $output = Invoke-PSTenableRest @Splat
 
+        if ($output.response.releasesession -eq $true) {
+
+            Invoke-PSTenableTokenRenewal
+
+            $Splat = @{
+                Method   = "Post"
+                Body     = $(ConvertTo-Json $query -depth 5)
+                Endpoint = "/analysis"
+            }
+
+            $output = Invoke-PSTenableRest @Splat
+        }
+        else {
+            $Outputobject = $Output.response.results
+        }
+
     }
 
     end {
-        $Output.response.results
+        $outputobject
     }
 }

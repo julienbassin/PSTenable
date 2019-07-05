@@ -67,22 +67,23 @@ function Connect-PSTenable {
             ContentType     = "application/json"
             Body            = (ConvertTo-Json $APICredential)
             ErrorAction     = "Stop"
+            ErrorVariable   = "TenableTokenError"
         }
 
         try {
             $Session = Invoke-RestMethod @SessionSplat
         } catch {
-            Stop-PSFFunction -Message "Username or Password is incorect." -ErrorRecord $_
-            return
+            if ($tenabletokenerror -match "Could not create SSL/TLS secure channel") {
+                Stop-PSFFunction -Message "TLS 1.2 is not configured in your PowerShell session. Please configure prior to continuing." -ErrorRecord $_
+                return
+            }
         }
     }
 
     end {
 
         if ($PSBoundParameters.ContainsKey('Register')) {
-            Set-PSFconfig -FullName "PSTenable.Token" -Value $Session.response.token
             Set-PSFconfig -FullName "PSTenable.WebSession" -Value $SCSession
-            Register-PSFConfig -FullName "PSTenable.Token"
             Register-PSFConfig -FullName "PSTenable.WebSession"
         }
 

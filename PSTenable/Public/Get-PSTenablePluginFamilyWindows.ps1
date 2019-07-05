@@ -75,7 +75,23 @@ function Get-PSTenablePluginFamilyWindows {
                 Endpoint = "/analysis"
             }
 
-            Invoke-PSTenableRest @Splat
+            $a = Invoke-PSTenableRest @Splat
+
+            if ($a.response.releasesession -eq $true) {
+
+                Invoke-PSTenableTokenRenewal
+
+                $Splat = @{
+                    Method   = "Post"
+                    Body     = $(ConvertTo-Json $query -depth 5)
+                    Endpoint = "/analysis"
+                }
+
+                Invoke-PSTenableRest @Splat
+            }
+            else {
+                $a
+            }
 
         }
     }
