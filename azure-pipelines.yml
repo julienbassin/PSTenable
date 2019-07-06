@@ -14,5 +14,5 @@ jobs:
     - pwsh: ./build.ps1 -Task Publish
       displayName: 'Publish PowerShell Module'
       env:
-        psgallery: $(PSGALLERY_API_KEY)
+        PSGALLERY_API_KEY: $(PSGALLERY_API_KEY)
 
