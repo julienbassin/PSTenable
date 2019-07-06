@@ -11,7 +11,7 @@ Function Invoke-PSTenableTokenRenewal {
     .OUTPUTS
         None
     .NOTES
-        This a private function dedicated to retreiving a new token for the user.
+        This a private function dedicated to retreiving a new token for the user and storing it using PSFramework.
     #>
     [CmdletBinding()]
     param (
