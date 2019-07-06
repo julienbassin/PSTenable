@@ -24,10 +24,9 @@ tenable server that is used within PSTenable.
 
 ### EXAMPLE 1
 ```
-$Cred = Get-Credential
+PS C:\> $Cred = Get-Credential
+PS C:\> Connect-PSTenable -Credential $Cred -TenableServer "tenable.domain.com/rest" -Register
 ```
-
-PS C:\\\> Connect-PSTenable -Credential $Cred -TenableServer "tenable.domain.com/rest" -Register
 This prompts for user credentials, and then, using Connect-PSTenable, sets the credentials,
 token, web session, and the Tenable Server using PSFramework.
 
