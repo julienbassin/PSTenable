@@ -12,15 +12,15 @@
         Version = '4.8.0'
     }
     'BuildHelpers' = @{
-        Version = '2.0.8'
+        Version = '2.0.9'
     }
     'PowerShellBuild' = @{
-        Version = '0.3.0'
+        Version = '0.3.1'
     }
     'PSFramework' = @{
         Version = 'latest'
     }
     'PSScriptAnalyzer' = @{
-        Version = 'latest'
+        Version = '1.18.1'
     }
 }

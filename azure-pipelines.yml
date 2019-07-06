@@ -8,7 +8,11 @@ jobs:
     - task: PublishTestResults@2
       inputs:
         testRunner: 'NUnit'
-        testResultsFiles: '**/testResults.xml'
+        testResultsFiles: '**/out/testResults.xml'
         testRunTitle: 'pwsh_win2016'
       displayName: 'Publish Test Results'
+    - pwsh: ./build.ps1 -Task Publish -Verbose
+      displayName: 'Publish PowerShell Module'
+      env:
+        psgallery: $(PSGALLERY_API_KEY)
 
