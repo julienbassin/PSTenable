@@ -11,4 +11,7 @@ jobs:
         testResultsFiles: '**/out/testResults.xml'
         testRunTitle: 'pwsh_win2016'
       displayName: 'Publish Test Results'
-
+    - pwsh: ./build -Tastk Publish
+      displayName: 'Publish PowerShell Module'
+      env:
+        PSGALLERY_API_KEY: $(PSGALLERY_API_KEY)
