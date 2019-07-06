@@ -11,7 +11,8 @@ jobs:
         testResultsFiles: '**/out/testResults.xml'
         testRunTitle: 'pwsh_win2016'
       displayName: 'Publish Test Results'
-    - pwsh: ./build.ps1 -Task Publish
-      displayName: 'Publish PowerShell Module'
+    - pwsh: ./build.ps1 -Task PublishToPSGallery
+      displayName: 'Publish to PSGallery'
+      condition: eq(variables['Build.SourceBranch'], 'refs/heads/master')
       env:
         PSGALLERY_API_KEY: $(PSGALLERY_API_KEY)

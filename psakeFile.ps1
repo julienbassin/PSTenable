@@ -4,10 +4,29 @@ properties {
     # in the PowerShellBuild shared psake task module
     $PSBPreference.Build.CompileModule = $false
     $PSBPreference.Publish.PSRepositoryApiKey = $ENV:PSGALLERY_API_KEY
+    $moduleName = $env:BHProjectName
+    $manifest = Import-PowerShellDataFile -Path $env:BHPSModuleManifest
+    $outputDir = Join-Path -Path $ENV:BHProjectPath -ChildPath 'Output'
+    $outputModDir = Join-Path -Path $outputDir -ChildPath $env:BHProjectName
+    $outputModVerDir = Join-Path -Path $outputModDir -ChildPath $manifest.ModuleVersion
 }
 
 task default -depends Test
 
 task Test -FromModule PowerShellBuild -Version '0.3.1'
 
-task Publish -FromModule PowerShellBuild -Version '0.3.1'
+task PublishToPSGallery -action {
+    Try {
+        $Splat = @{
+            Path        = $outputModDir
+            NuGetApiKey = $env:PSGALLERY_API_KEY
+            ErrorAction = 'Stop'
+        }
+        Publish-Module @Splat
+
+        Write-Output "Published $outputModVerDir to PS Gallery"
+
+    } Catch {
+        throw $_
+    }
+}
