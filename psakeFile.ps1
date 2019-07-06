@@ -3,7 +3,6 @@ properties {
     # This modifies the default behavior from the "Build" task
     # in the PowerShellBuild shared psake task module
     $PSBPreference.Build.CompileModule = $false
-    $PSBPreference.Publish.PSRepositoryApiKey = $ENV:PSGALLERY_API_KEY
     $moduleName = $env:BHProjectName
     $manifest = Import-PowerShellDataFile -Path $env:BHPSModuleManifest
     $outputDir = Join-Path -Path $ENV:BHProjectPath -ChildPath 'Output'
