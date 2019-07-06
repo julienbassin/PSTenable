@@ -109,7 +109,7 @@
             LicenseUri = 'https://github.com/jwmoss/PSTenable/blob/master/LICENSE'
 
             # A URL to the main website for this project.
-            ProjectUri = 'https://github.com/jwmoss/PSTenable.git'
+            ProjectUri = 'https://github.com/jwmoss/PSTenable'
 
             # A URL to an icon representing this module.
             # IconUri = ''
