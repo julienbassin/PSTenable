@@ -5,7 +5,7 @@ Function Invoke-PSTenableTokenRenewal {
     .DESCRIPTION
         Function that returns another token upon session expiration.
     .EXAMPLE
-        PS C:\> Invoke-PSTenableTokenRenwal
+        PS C:\> Invoke-PSTenableTokenRenewal
     .INPUTS
         None
     .OUTPUTS

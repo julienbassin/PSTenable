@@ -81,7 +81,7 @@ function Get-PSTenableAssetAnalysis {
                 Endpoint = "/analysis"
             }
 
-            $output = Invoke-PSTenableRest @Splat
+            $Outputobject = (Invoke-PSTenableRest @Splat).response.results
         }
         else {
             $Outputobject = $Output.response.results

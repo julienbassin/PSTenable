@@ -94,7 +94,7 @@ function Get-PSTenableSeverity {
                 Endpoint = "/analysis"
             }
 
-            Invoke-PSTenableRest @Splat
+            $a = Invoke-PSTenableRest @Splat
         }
         else {
             $a

@@ -74,7 +74,7 @@ function Get-PSTenablePlugin {
                 Endpoint = "/analysis"
             }
 
-            $results = Invoke-PSTenableRest @Splat
+            $Results = Invoke-PSTenableRest @Splat
 
             if ($output.response.releasesession -eq $true) {
 
@@ -86,7 +86,7 @@ function Get-PSTenablePlugin {
                     Endpoint = "/analysis"
                 }
 
-                $results = Invoke-PSTenableRest @Splat
+                $Results = (Invoke-PSTenableRest @Splat).response.results
             }
             else {
                 $results = $Output.response.results
