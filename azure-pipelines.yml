@@ -8,7 +8,7 @@ jobs:
     - task: PublishTestResults@2
       inputs:
         testRunner: 'NUnit'
-        testResultsFiles: '**/out/testResults.xml'
+        testResultsFiles: '**/testResults.xml'
         testRunTitle: 'pwsh_win2016'
       displayName: 'Publish Test Results'
 
