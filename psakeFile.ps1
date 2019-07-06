@@ -15,7 +15,7 @@ task default -depends Test
 
 task Test -FromModule PowerShellBuild -Version '0.3.1'
 
-task Publish {
+task PublishToPSGallery {
     "Publishing version [$($outputModVerDir)] to PSGallery..."
     Publish-Module -Path $outputModDir -NuGetApiKey $ENV:PSGALLERY_API_KEY -Repository PSGallery
 } -description 'Publish to PowerShellGallery'
