@@ -19,23 +19,23 @@ Describe 'Module manifest' {
         }
 
         It 'has a valid name in the manifest' {
-            $script:manifest.Name | Should Be $env:BHProjectName
+            $script:manifest.Name | Should -Be $env:BHProjectName
         }
 
         It 'has a valid root module' {
-            $script:manifest.RootModule | Should Be "$($moduleName).psm1"
+            $script:manifest.RootModule | Should -Be "$($moduleName).psm1"
         }
 
         It 'has a valid version in the manifest' {
-            $script:manifest.Version -as [Version] | Should -Not BeNullOrEmpty
+            $script:manifest.Version -as [Version] | Should -Not -BeNullOrEmpty
         }
 
         It 'has a valid description' {
-            $script:manifest.Description | Should -Not BeNullOrEmpty
+            $script:manifest.Description | Should -Not -BeNullOrEmpty
         }
 
         It 'has a valid author' {
-            $script:manifest.Author | Should -Not BeNullOrEmpty
+            $script:manifest.Author | Should -Not -BeNullOrEmpty
         }
 
         It 'has a valid guid' {
@@ -45,7 +45,7 @@ Describe 'Module manifest' {
         }
 
         It 'has a valid copyright' {
-            $script:manifest.CopyRight | Should -Not BeNullOrEmpty
+            $script:manifest.CopyRight | Should -Not -BeNullOrEmpty
         }
 
         $script:changelogVersion = $null
@@ -56,8 +56,8 @@ Describe 'Module manifest' {
                     break
                 }
             }
-            $script:changelogVersion               | Should -Not BeNullOrEmpty
-            $script:changelogVersion -as [Version] | Should -Not BeNullOrEmpty
+            $script:changelogVersion               | Should -Not -BeNullOrEmpty
+            $script:changelogVersion -as [Version] | Should -Not -BeNullOrEmpty
         }
 
         It 'changelog and manifest versions are the same' {
@@ -73,8 +73,8 @@ Describe 'Module manifest' {
                     $script:tagVersion = $matches[1]
                 }
 
-                $script:tagVersion               | Should -Not BeNullOrEmpty
-                $script:tagVersion -as [Version] | Should -Not BeNullOrEmpty
+                $script:tagVersion               | Should -Not -BeNullOrEmpty
+                $script:tagVersion -as [Version] | Should -Not -BeNullOrEmpty
             }
 
             It 'all versions are the same' {
