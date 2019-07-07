@@ -21,6 +21,10 @@ task PublishToPSGallery -action {
             NuGetApiKey = $env:PSGALLERY_API_KEY
             ErrorAction = 'Stop'
         }
+
+        Write-host "Output module directory is $outputmodDir"
+        Write-host "Version is $outputmodverdir"
+
         Publish-Module @Splat
 
         Write-Output "Published $outputModVerDir to PS Gallery"
