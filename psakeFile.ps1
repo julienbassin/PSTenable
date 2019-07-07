@@ -18,11 +18,9 @@ task PublishToPSGallery -action {
     Try {
         $Splat = @{
             Path        = $outputModDir
-            NuGetApiKey = $env:PSGALLERY_API_KEY
+            NuGetApiKey = $env:API
             ErrorAction = 'Stop'
         }
-
-        Test-Path -Path $outputModDir
 
         Publish-Module @Splat
 

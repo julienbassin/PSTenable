@@ -15,4 +15,4 @@ jobs:
       displayName: 'Publish to PSGallery'
       condition: eq(variables['Build.SourceBranch'], 'refs/heads/master')
       env:
-        PSGALLERY_API_KEY: $(PSGALLERY_API_KEY)
+        API: $(API)
