@@ -22,12 +22,9 @@ task PublishToPSGallery -action {
             ErrorAction = 'Stop'
         }
 
-        Write-host "Output module directory is $outputmodDir"
-        Write-host "Version is $outputmodverdir"
+        Test-Path -Path $outputModDir
 
         Publish-Module @Splat
-
-        Write-Output "Published $outputModVerDir to PS Gallery"
 
     } Catch {
         throw $_
