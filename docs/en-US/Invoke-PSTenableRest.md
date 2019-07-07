@@ -13,7 +13,7 @@ schema: 2.0.0
 ## SYNTAX
 
 ```
-Invoke-PSTenableRest [-Endpoint] <String> [-Method] <String> [[-Body] <Object>] [<CommonParameters>]
+Invoke-PSTenableRest [-Endpoint] <String> [-Method] <String> [[-Body] <Hashtable>] [<CommonParameters>]
 ```
 
 ## DESCRIPTION
@@ -23,7 +23,7 @@ Invoke-PSTenableRest [-Endpoint] <String> [-Method] <String> [[-Body] <Object>] 
 
 ### Example 1
 ```powershell
-PS C:\> {{ Add example code here }}
+PS C:\> Invoke-PSTenableRest -Endpoint "/analysis" -Method "GET" -Body $Body
 ```
 
 {{ Add example description here }}
@@ -64,7 +64,7 @@ Accept wildcard characters: False
 {{ Fill Body Description }}
 
 ```yaml
-Type: Object
+Type: Hashtable
 Parameter Sets: (All)
 Aliases:
 
