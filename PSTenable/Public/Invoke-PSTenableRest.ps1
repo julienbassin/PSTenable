@@ -1,4 +1,24 @@
 function Invoke-PSTenableRest {
+        <#
+    .SYNOPSIS
+        Wrapper around Invoke-RestMethod.
+    .DESCRIPTION
+        This function provides a way to execute Invoke-RestMethod using common parameters required by PSTenable.
+    .EXAMPLE
+        PS C:\> Invoke-PSTenableRest -Endpoint "/analysis" -Method "POST" -Body $Body
+    .INPUTS
+        None
+    .PARAMETER Endpoint
+        The rest endpoint used in Invoke-RestMethod, such as /analysis.
+    .PARAMETER Method
+        POST, GET, DELETE, CREATE
+    .PARAMETER Body
+        Body of Invoke-RestMethod
+    .OUTPUTS
+        None
+    .NOTES
+        None
+    #>
     [CmdletBinding()]
     Param(
         [Parameter(Mandatory = $true)]
