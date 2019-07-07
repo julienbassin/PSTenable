@@ -23,7 +23,4 @@
     'PSScriptAnalyzer' = @{
         Version = '1.18.1'
     }
-    'PowerShellGet' = @{
-        Version = 'latest'
-    }
 }
