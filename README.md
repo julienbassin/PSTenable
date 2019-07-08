@@ -4,6 +4,8 @@ A PowerShell wrapper around Tenable Security Center API
 
 ## Overview
 
+[![Build Status](https://dev.azure.com/jwmoss/PSTenable/_apis/build/status/jwmoss.PSTenable?branchName=master)](https://dev.azure.com/jwmoss/PSTenable/_build/latest?definitionId=1&branchName=master)
+
 This is a PowerShell Module that I developed that is an API wrapper around [Tenable Security Center's API](https://docs.tenable.com/sccv/api/index.html) version 5.10
 
 ## Installation
