@@ -5,6 +5,12 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/)
 and this project adheres to [Semantic Versioning](http://semver.org/).
 
+## [0.1.3] 2019-07-09
+
+- Added feature in Invoke-PSTenableRest to enable TLS 1.2 and restoring TLS settings, used in [KBUpdate](https://github.com/potatoqualitee/kbupdate).
+- Added feature in Connect-PSTenable to automatically fix Invoke-RestMethod if hostname isn't using TLS.
+- Formatting changes for a handful of functions.
+
 ## [0.1.2] 2019-07-05
 
 - Initial upload to gallery
