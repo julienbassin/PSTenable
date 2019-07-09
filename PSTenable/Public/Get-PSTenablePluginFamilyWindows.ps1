@@ -23,15 +23,15 @@ function Get-PSTenablePluginFamilyWindows {
 
     begin {
 
-    }
-
-    process {
-
         $WindowsPlugins = @(
             '20',
             '10',
             '29'
         )
+
+    }
+
+    process {
 
         $Output = Foreach ($plugin in $WindowsPlugins) {
 
