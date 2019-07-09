@@ -31,19 +31,47 @@ function Invoke-PSTenableRest {
         $Method,
 
         [Parameter(Mandatory = $false)]
-        [hashtable]
         $Body
     )
 
-    if ($PSBoundParameters.ContainsKey('Body')) {
-        $RestMethod_Params['Body'] = $Body
+    Begin {
+        if ($(Get-PSFConfigValue -FullName 'PSTenable.Server') -notmatch "https") {
+            # Disable SSL certificate validation.
+            [System.Net.ServicePointManager]::ServerCertificateValidationCallback = { $true }
+        }
+
+        $RestMethodParams = @{
+            URI         = $(Get-PSFConfigValue -FullName 'PSTenable.Server') + $Endpoint
+            Method      = $Method
+            Headers     = @{"X-SecurityCenter" = $(Get-PSFConfigValue -FullName 'PSTenable.Token') }
+            ContentType = "application/json"
+            ErrorAction = "Stop"
+            WebSession  = $(Get-PSFConfigValue -FullName "PSTenable.WebSession")
+        }
+
+        if ($PSBoundParameters.ContainsKey('Body')) {
+            $RestMethodParams.Add('Body', $Body)
+        }
     }
 
-    $RestMethod_Params = @{ }
-    $RestMethod_Params['Uri'] = $(Get-PSFConfigValue -FullName 'PSTenable.Server')/$Endpoint
-    $RestMethod_Params['Method'] = $Method
-    $RestMethod_Params['Headers'] = @{"X-SecurityCenter" = $(Get-PSFConfigValue -FullName 'PSTenable.Token') }
-    $RestMethod_Params['ContentType'] = "application/json"
-    Invoke-RestMethod @RestMethod_Params
+    Process {
+        ## Enable TLS 1.2
+        ## Taken from https://github.com/potatoqualitee/kbupdate/blob/master/kbupdate.psm1
+        $currentProgressPref = $ProgressPreference
+        $ProgressPreference = "SilentlyContinue"
+        $currentVersionTls = [Net.ServicePointManager]::SecurityProtocol
+        $currentSupportableTls = [Math]::Max($currentVersionTls.value__, [Net.SecurityProtocolType]::Tls.value__)
+        $availableTls = [enum]::GetValues('Net.SecurityProtocolType') | Where-Object { $_ -gt $currentSupportableTls }
+        $availableTls | ForEach-Object {
+            [Net.ServicePointManager]::SecurityProtocol = [Net.ServicePointManager]::SecurityProtocol -bor $_
+        }
+
+        Invoke-RestMethod @RestMethodParams
+    }
+
+    End {
+        [Net.ServicePointManager]::SecurityProtocol = $currentVersionTls
+        $ProgressPreference = $currentProgressPref
+    }
 
 }
