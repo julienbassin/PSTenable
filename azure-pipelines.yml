@@ -4,9 +4,6 @@ trigger:
       - master
     exclude:
       - develop
-  paths:
-    include:
-    - ./PSTenable/PSTenable.psd1
 
 pr:
   branches:
