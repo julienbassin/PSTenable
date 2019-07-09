@@ -37,30 +37,25 @@ function Connect-PSTenable {
         [switch]
         $Register
     )
-
     begin {
 
+        if ($TenableServer -notmatch "https") {
+            # Disable SSL certificate validation.
+            [System.Net.ServicePointManager]::ServerCertificateValidationCallback = { $true }
+        }
     }
 
     process {
 
-        Set-PSFConfig -FullName "PSTenable.Server" -Value $TenableServer
-        Set-PSFconfig -FullName "PSTenable.Credential" -Value $Credential
-
-        if ($PSBoundParameters.ContainsKey('Register')) {
-            Register-PSFConfig -FullName "PSTenable.Server"
-            Register-PSFConfig -FullName "PSTenable.Credential"
-        }
-
         # Credentials
         $APICredential = @{
-            username       = (Get-PSFConfigValue -FullName 'PSTenable.Credential').UserName
-            password       = (Get-PSFConfigValue -FullName 'PSTenable.Credential').GetNetworkCredential().Password
+            username       = $Credential.UserName
+            password       = $Credential.GetNetworkCredential().Password
             releaseSession = "FALSE"
         }
 
         $SessionSplat = @{
-            URI             = "$(Get-PSFConfigValue -FullName 'PSTenable.Server')/token"
+            URI             = "$TenableServer/token"
             SessionVariable = "SCSession"
             Method          = "Post"
             ContentType     = "application/json"
@@ -69,24 +64,33 @@ function Connect-PSTenable {
             ErrorVariable   = "TenableTokenError"
         }
 
-        try {
-            $Session = Invoke-RestMethod @SessionSplat
-        } catch {
-            if ($tenabletokenerror -match "Could not create SSL/TLS secure channel") {
-                Stop-PSFFunction -Message "TLS 1.2 is not configured in your PowerShell session. Please configure prior to continuing." -ErrorRecord $_
-                return
-            }
+        $currentProgressPref = $ProgressPreference
+        $ProgressPreference = "SilentlyContinue"
+        $currentVersionTls = [Net.ServicePointManager]::SecurityProtocol
+        $currentSupportableTls = [Math]::Max($currentVersionTls.value__, [Net.SecurityProtocolType]::Tls.value__)
+        $availableTls = [enum]::GetValues('Net.SecurityProtocolType') | Where-Object { $_ -gt $currentSupportableTls }
+        $availableTls | ForEach-Object {
+            [Net.ServicePointManager]::SecurityProtocol = [Net.ServicePointManager]::SecurityProtocol -bor $_
         }
+
+        $Session = Invoke-RestMethod @SessionSplat
+
+        [Net.ServicePointManager]::SecurityProtocol = $currentVersionTls
+        $ProgressPreference = $currentProgressPref
     }
 
     end {
 
-        if ($PSBoundParameters.ContainsKey('Register')) {
-            Set-PSFconfig -FullName "PSTenable.WebSession" -Value $SCSession
-            Register-PSFConfig -FullName "PSTenable.WebSession"
-        }
-
-        Set-PSFconfig -FullName "PSTenable.Token" -Value $Session.response.token
         Set-PSFconfig -FullName "PSTenable.WebSession" -Value $SCSession
+        Set-PSFconfig -FullName "PSTenable.Token" -Value $Session.response.token
+        Set-PSFConfig -FullName "PSTenable.Server" -Value $TenableServer
+        Set-PSFconfig -FullName "PSTenable.Credential" -Value $Credential
+
+        if ($PSBoundParameters.ContainsKey('Register')) {
+            Register-PSFConfig -FullName "PSTenable.WebSession"
+            Register-PSFConfig -FullName "PSTenable.Token"
+            Register-PSFConfig -FullName "PSTenable.Server"
+            Register-PSFConfig -FullName "PSTenable.Token"
+        }
     }
 }
