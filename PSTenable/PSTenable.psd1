@@ -76,6 +76,7 @@
         'Get-PSTenablePlugin',
         'Get-PSTenablePluginFamilyWindows',
         'Get-PSTenableSeverity',
+        'Get-PSTenableWindowsServerJava'
         'Invoke-PSTenableRest'
     )
 
