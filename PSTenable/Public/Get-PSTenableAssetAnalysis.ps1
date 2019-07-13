@@ -25,7 +25,8 @@ function Get-PSTenableAssetAnalysis {
     )
 
     begin {
-
+        $TokenExpiry = Invoke-PSTenableTokenStatus
+        if ($TokenExpiry -eq $True) {Invoke-PSTenableTokenRenewal} else {continue}
     }
 
     process {
@@ -69,27 +70,9 @@ function Get-PSTenableAssetAnalysis {
             Endpoint = "/analysis"
         }
 
-        $output = Invoke-PSTenableRest @Splat
-
-        if ($output.response.releasesession -eq $true) {
-
-            Invoke-PSTenableTokenRenewal
-
-            $Splat = @{
-                Method   = "Post"
-                Body     = $(ConvertTo-Json $query -depth 5)
-                Endpoint = "/analysis"
-            }
-
-            $Outputobject = (Invoke-PSTenableRest @Splat).response.results
-        }
-        else {
-            $Outputobject = $Output.response.results
-        }
-
     }
 
     end {
-        $outputobject
+        Invoke-PSTenableRest @Splat | Select-Object -ExpandProperty Response | Select-Object -ExpandProperty Results
     }
 }

@@ -32,6 +32,9 @@ function Get-PSTenableSeverity {
 
     begin {
 
+        $TokenExpiry = Invoke-PSTenableTokenStatus
+        if ($TokenExpiry -eq $True) { Invoke-PSTenableTokenRenewal } else { continue }
+
         switch ($Severity) {
             "Critical" { $ID = "4" }
             "High" { $ID = "3" }
@@ -81,27 +84,9 @@ function Get-PSTenableSeverity {
             Body     = $(ConvertTo-Json $query -depth 5)
             Endpoint = "/analysis"
         }
-
-        $a = Invoke-PSTenableRest @Splat
-
-        if ($a.response.releasesession -eq $true) {
-
-            Invoke-PSTenableTokenRenewal
-
-            $Splat = @{
-                Method   = "Post"
-                Body     = $(ConvertTo-Json $query -depth 5)
-                Endpoint = "/analysis"
-            }
-
-            $a = Invoke-PSTenableRest @Splat
-        }
-        else {
-            $a
-        }
     }
 
     end {
-        $a.response.results
+        Invoke-PSTenableRest @Splat | Select-Object -ExpandProperty Response | Select-Object -ExpandProperty Results
     }
 }

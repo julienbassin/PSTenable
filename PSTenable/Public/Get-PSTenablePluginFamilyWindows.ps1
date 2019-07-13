@@ -22,16 +22,17 @@ function Get-PSTenablePluginFamilyWindows {
     )
 
     begin {
+        $TokenExpiry = Invoke-PSTenableTokenStatus
+        if ($TokenExpiry -eq $True) {Invoke-PSTenableTokenRenewal} else {continue}
+    }
+
+    process {
 
         $WindowsPlugins = @(
             '20',
             '10',
             '29'
         )
-
-    }
-
-    process {
 
         $Output = Foreach ($plugin in $WindowsPlugins) {
 
@@ -75,28 +76,12 @@ function Get-PSTenablePluginFamilyWindows {
                 Endpoint = "/analysis"
             }
 
-            $a = Invoke-PSTenableRest @Splat
-
-            if ($a.response.releasesession -eq $true) {
-
-                Invoke-PSTenableTokenRenewal
-
-                $Splat = @{
-                    Method   = "Post"
-                    Body     = $(ConvertTo-Json $query -depth 5)
-                    Endpoint = "/analysis"
-                }
-
-                Invoke-PSTenableRest @Splat
-            }
-            else {
-                $a
-            }
+            Invoke-PSTenableRest @Splat | Select-Object -ExpandProperty Response | Select-Object -ExpandProperty Results
 
         }
     }
 
     end {
-        $output.response.results
+        $output
     }
 }

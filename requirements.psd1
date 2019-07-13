@@ -18,7 +18,7 @@
         Version = '0.3.1'
     }
     'PSFramework' = @{
-        Version = 'latest'
+        Version = '1.0.19'
     }
     'PSScriptAnalyzer' = @{
         Version = '1.18.1'

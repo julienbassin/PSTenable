@@ -19,6 +19,11 @@ function Get-PSTenableWindowsServerJava {
 
     )
 
+    Begin {
+        $TokenExpiry = Invoke-PSTenableTokenStatus
+        if ($TokenExpiry -eq $True) { Invoke-PSTenableTokenRenewal } else { continue }
+    }
+
     process {
         $query = @{
             "query"      = @{
@@ -80,17 +85,10 @@ function Get-PSTenableWindowsServerJava {
             Body     = $(ConvertTo-Json $query -depth 50)
             Endpoint = "/analysis"
         }
-        $Results = Invoke-TenableRest @Splat
-        if ($Results.response.releasesession -eq $true) {
-            Invoke-TenableTokenRenewal
-            $Splat = @{
-                Method   = "Post"
-                Body     = $(ConvertTo-Json $query -depth 5)
-                Endpoint = "/analysis"
-            }
-            (Invoke-TenableRest @Splat).response.results
-        } else {
-            (Invoke-TenableRest @Splat).response.results
-        }
+    }
+
+    End {
+        Invoke-PSTenableRest @Splat | Select-Object -ExpandProperty Response | Select-Object -ExpandProperty Results
+
     }
 }

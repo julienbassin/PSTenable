@@ -29,7 +29,8 @@ function Get-PSTenablePlugin {
     )
 
     begin {
-
+        $TokenExpiry = Invoke-PSTenableTokenStatus
+        if ($TokenExpiry -eq $True) {Invoke-PSTenableTokenRenewal} else {continue}
     }
 
     process {
@@ -74,23 +75,8 @@ function Get-PSTenablePlugin {
                 Endpoint = "/analysis"
             }
 
-            $Results = Invoke-PSTenableRest @Splat
+            Invoke-PSTenableRest @Splat | Select-Object -ExpandProperty Response | Select-Object -ExpandProperty Results
 
-            if ($Results.response.releasesession -eq $true) {
-
-                Invoke-PSTenableTokenRenewal
-
-                $Splat = @{
-                    Method   = "Post"
-                    Body     = $(ConvertTo-Json $query -depth 5)
-                    Endpoint = "/analysis"
-                }
-
-                (Invoke-PSTenableRest @Splat).response.results
-            }
-            else {
-                (Invoke-PSTenableRest @Splat).response.results
-            }
         }
 
     }
