@@ -76,7 +76,7 @@ function Get-PSTenablePlugin {
 
             $Results = Invoke-PSTenableRest @Splat
 
-            if ($output.response.releasesession -eq $true) {
+            if ($Results.response.releasesession -eq $true) {
 
                 Invoke-PSTenableTokenRenewal
 
@@ -86,16 +86,16 @@ function Get-PSTenablePlugin {
                     Endpoint = "/analysis"
                 }
 
-                $Results = (Invoke-PSTenableRest @Splat).response.results
+                (Invoke-PSTenableRest @Splat).response.results
             }
             else {
-                $results = $Output.response.results
+                (Invoke-PSTenableRest @Splat).response.results
             }
         }
 
     }
 
     end {
-        $results
+        $Output
     }
 }

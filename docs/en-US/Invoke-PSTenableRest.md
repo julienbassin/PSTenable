@@ -13,7 +13,7 @@ schema: 2.0.0
 ## SYNTAX
 
 ```
-Invoke-PSTenableRest [-Endpoint] <String> [-Method] <String> [[-Body] <Hashtable>] [<CommonParameters>]
+Invoke-PSTenableRest [-Endpoint] <String> [-Method] <String> [[-Body] <Object>] [<CommonParameters>]
 ```
 
 ## DESCRIPTION
@@ -64,7 +64,7 @@ Accept wildcard characters: False
 {{ Fill Body Description }}
 
 ```yaml
-Type: Hashtable
+Type: Object
 Parameter Sets: (All)
 Aliases:
 

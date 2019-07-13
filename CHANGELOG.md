@@ -5,6 +5,11 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/)
 and this project adheres to [Semantic Versioning](http://semver.org/).
 
+## [0.2.0] 2019-07-12
+
+- Added Get-PSTenableWindowsServerJava
+- Fixed issue with Get-PSTenablePlugin output
+
 ## [0.1.3] 2019-07-09
 
 - Added feature in Invoke-PSTenableRest to enable TLS 1.2 and restoring TLS settings, used in [KBUpdate](https://github.com/potatoqualitee/kbupdate).

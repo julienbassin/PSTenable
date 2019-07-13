@@ -5,6 +5,8 @@ A cross-platform PowerShell Module that uses the Tenable Security Center API.
 ## Overview
 
 [![Build Status](https://dev.azure.com/jwmoss/PSTenable/_apis/build/status/jwmoss.PSTenable?branchName=master)](https://dev.azure.com/jwmoss/PSTenable/_build/latest?definitionId=1&branchName=master)
+[![PowerShell Gallery Version](https://img.shields.io/powershellgallery/v/PSTenable.svg)](https://www.powershellgallery.com/packages/PSTenable)
+[![PowerShell Gallery Downloads](https://img.shields.io/powershellgallery/dt/PSTenable.svg)](https://www.powershellgallery.com/packages/PSTenable)
 
 This is a PowerShell Module that functions as an API wrapper around [Tenable Security Center's API](https://docs.tenable.com/sccv/api/index.html) version 5.10. PSTenable works with Windows PowerShell 5.1 and PowerShell 6. PSTenable
 automatically handles token refresh for you, specified in Tenable's documentation [here](https://docs.tenable.com/sccv/api/Token.html).
