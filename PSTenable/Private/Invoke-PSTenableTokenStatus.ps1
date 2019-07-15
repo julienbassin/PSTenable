@@ -1,11 +1,11 @@
-Function Invoke-PSTenableTokenCheck {
+Function Invoke-PSTenableTokenStatus {
     <#
     .SYNOPSIS
         Function that returns whether the session token has expired.
     .DESCRIPTION
         Function that returns whether the session token has expired.
     .EXAMPLE
-        PS C:\> $TokenExpiry = Invoke-PStenableTokenCheck
+        PS C:\> $TokenExpiry = Invoke-PStenableTokenStatus
         PS C:\> if ($TokenExpiry -eq $True) {Invoke-PSTenableTokenRenewal} else {continue}
     .INPUTS
         None
