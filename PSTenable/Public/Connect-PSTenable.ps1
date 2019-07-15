@@ -39,10 +39,6 @@ function Connect-PSTenable {
     )
     begin {
 
-        if ($TenableServer -notmatch "https") {
-            # Disable SSL certificate validation.
-            [System.Net.ServicePointManager]::ServerCertificateValidationCallback = { $true }
-        }
     }
 
     process {
