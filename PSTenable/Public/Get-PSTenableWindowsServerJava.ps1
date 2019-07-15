@@ -21,7 +21,7 @@ function Get-PSTenableWindowsServerJava {
 
     Begin {
         $TokenExpiry = Invoke-PSTenableTokenStatus
-        if ($TokenExpiry -eq $True) { Invoke-PSTenableTokenRenewal } else { continue }
+        if ($TokenExpiry -eq $True) {Invoke-PSTenableTokenRenewal}
     }
 
     process {

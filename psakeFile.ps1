@@ -18,7 +18,7 @@ task PublishToPSGallery -Action {
     ## https://github.com/KevinMarquette/PSGraph/blob/master/BuildTasks/PublishModule.Task.ps1
 
     if ($ENV:BHBranchName -eq "master" -and
-        $ENV:BHCommitMessage -eq "!deploy" -and
+        $ENV:BHCommitMessage -match "!deploy" -and
         -not [string]::IsNullOrWhiteSpace($ENV:API)) {
 
         $publishModuleSplat = @{

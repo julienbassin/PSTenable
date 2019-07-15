@@ -35,10 +35,6 @@ function Invoke-PSTenableRest {
     )
 
     Begin {
-        if ($(Get-PSFConfigValue -FullName 'PSTenable.Server') -notmatch "https") {
-            # Disable SSL certificate validation.
-            [System.Net.ServicePointManager]::ServerCertificateValidationCallback = { $true }
-        }
 
         $RestMethodParams = @{
             URI         = $(Get-PSFConfigValue -FullName 'PSTenable.Server') + $Endpoint

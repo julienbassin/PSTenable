@@ -33,7 +33,7 @@ function Get-PSTenableSeverity {
     begin {
 
         $TokenExpiry = Invoke-PSTenableTokenStatus
-        if ($TokenExpiry -eq $True) { Invoke-PSTenableTokenRenewal } else { continue }
+        if ($TokenExpiry -eq $True) {Invoke-PSTenableTokenRenewal}
 
         switch ($Severity) {
             "Critical" { $ID = "4" }
