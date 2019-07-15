@@ -1,5 +1,9 @@
 # Change Log
 
+## [0.2.2] 2019-07-13
+
+- Fixed automatically retrieving token.
+
 ## [0.2.1] 2019-07-13
 
 - Re-worked how to automatically retrive a new token.
